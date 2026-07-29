@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Volume2, Languages, Hash, Palette, Dog, Users, BookOpen, Apple } from 'lucide-react';
-import { numbers, commonWords, fruitsVeggies, colors, animals, family } from '../data/tamil';
+import { Volume2, Languages, Hash, Palette, Dog, Users, BookOpen, Apple, Bus, Smile } from 'lucide-react';
+import { numbers, commonWords, fruitsVeggies, colors, animals, family, vehicles, bodyParts } from '../data/tamil';
 import { playAudio } from '../utils/audio';
 import { motion, AnimatePresence } from 'motion/react';
 import { CategoryItem } from '../types';
 
-type CategoryType = 'numbers' | 'words' | 'fruits' | 'colors' | 'animals' | 'family';
+type CategoryType = 'numbers' | 'words' | 'fruits' | 'colors' | 'animals' | 'family' | 'vehicles' | 'bodyParts';
 
 export function FunCategoryGrid() {
   const [activeCategory, setActiveCategory] = useState<CategoryType>('numbers');
@@ -13,7 +13,7 @@ export function FunCategoryGrid() {
   const getCategoryData = (): { title: string; items: CategoryItem[] } => {
     switch (activeCategory) {
       case 'numbers':
-        return { title: 'Numbers (Enngal ௧-௰)', items: numbers };
+        return { title: 'Numbers (Enngal)', items: numbers };
       case 'words':
         return { title: 'Everyday Words & Objects (Solgal)', items: commonWords };
       case 'fruits':
@@ -24,6 +24,10 @@ export function FunCategoryGrid() {
         return { title: 'Animals & Birds (Vilangugal)', items: animals };
       case 'family':
         return { title: 'Family & People (Kudumbam)', items: family };
+      case 'vehicles':
+        return { title: 'Vehicles & Transport (Uoorthigal)', items: vehicles };
+      case 'bodyParts':
+        return { title: 'Body Parts (Urupugal)', items: bodyParts };
     }
   };
 
@@ -41,6 +45,8 @@ export function FunCategoryGrid() {
             { id: 'colors', label: 'Colors', icon: Palette, activeClass: 'bg-pink-500 text-white' },
             { id: 'animals', label: 'Animals & Birds', icon: Dog, activeClass: 'bg-emerald-500 text-white' },
             { id: 'family', label: 'Family & People', icon: Users, activeClass: 'bg-sky-500 text-white' },
+            { id: 'vehicles', label: 'Vehicles', icon: Bus, activeClass: 'bg-purple-500 text-white' },
+            { id: 'bodyParts', label: 'Body Parts', icon: Smile, activeClass: 'bg-teal-500 text-white' },
           ] as const
         ).map(tab => {
           const Icon = tab.icon;
@@ -108,19 +114,21 @@ export function FunCategoryGrid() {
 
                 <button
                   onClick={() => playAudio(item.tamil, 'ta-IN')}
-                  className="p-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-2xl shadow-sm transition-transform hover:scale-110 active:scale-95 cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-black text-xs shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer ring-2 ring-indigo-200"
+                  title="Click to hear Tamil pronunciation"
                   aria-label={`Play audio for ${item.tamil}`}
                 >
-                  <Volume2 className="w-5 h-5" />
+                  <Volume2 className="w-5 h-5 shrink-0" />
+                  <span>Listen</span>
                 </button>
               </div>
 
               {/* Central Emoji & Tamil Word */}
-              <div className="text-center my-3">
-                <span className="text-6xl mb-3 block transform group-hover:scale-110 transition-transform">
+              <div className="text-center my-3 px-2">
+                <span className="text-5xl sm:text-6xl mb-3 block transform group-hover:scale-110 transition-transform">
                   {item.emoji}
                 </span>
-                <h4 className="text-3xl font-black text-slate-900 mb-1">{item.tamil}</h4>
+                <h4 className="text-2xl sm:text-3xl font-black text-slate-900 mb-1 leading-tight break-words">{item.tamil}</h4>
                 <p className="text-indigo-600 font-extrabold text-sm">/{item.english}/</p>
               </div>
 
@@ -129,10 +137,11 @@ export function FunCategoryGrid() {
                 <span className="font-extrabold text-slate-800 text-base">{item.translation}</span>
                 <button
                   onClick={() => playAudio(item.translation, 'en-US')}
-                  className="p-1.5 bg-white text-slate-500 hover:text-indigo-600 rounded-xl shadow-sm transition-colors cursor-pointer"
+                  className="flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 rounded-xl shadow-sm transition-all border border-slate-200 cursor-pointer font-extrabold text-xs"
                   aria-label={`Play English translation for ${item.translation}`}
                 >
-                  <Languages className="w-4 h-4" />
+                  <Languages className="w-4 h-4 text-indigo-500" />
+                  <span>EN</span>
                 </button>
               </div>
             </motion.div>

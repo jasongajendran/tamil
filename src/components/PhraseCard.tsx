@@ -43,19 +43,20 @@ export function PhraseCard({ phrase, index }: PhraseCardProps) {
                   <button
                     onClick={() => playAudio(phrase.tamil, 'ta-IN', true)}
                     title="Slow pronunciation (0.5x speed)"
-                    className="px-2 py-1 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm transition-colors text-emerald-300 flex items-center gap-1 text-xs font-black"
+                    className="px-2.5 py-1.5 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm transition-colors text-emerald-200 flex items-center gap-1 text-xs font-black cursor-pointer"
                     aria-label={`Play slow pronunciation for ${phrase.tamil}`}
                   >
-                    <Turtle className="w-3.5 h-3.5" />
+                    <Turtle className="w-4 h-4 shrink-0" />
                     <span>0.5x</span>
                   </button>
                   <button
                     onClick={() => playAudio(phrase.tamil, 'ta-IN')}
                     title="Normal pronunciation (1x speed)"
-                    className="p-2 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm transition-colors"
+                    className="px-3 py-1.5 bg-white text-indigo-700 hover:bg-indigo-50 rounded-full font-black text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
                     aria-label={`Play pronunciation for ${phrase.tamil}`}
                   >
-                    <Volume2 className="w-5 h-5 text-white" />
+                    <Volume2 className="w-5 h-5 text-indigo-600 shrink-0" />
+                    <span>Listen</span>
                   </button>
                 </div>
               </div>
@@ -70,14 +71,15 @@ export function PhraseCard({ phrase, index }: PhraseCardProps) {
           )}
         </div>
 
-        <div className={`mt-2 flex items-center gap-2 bg-white dark:bg-slate-800 px-4 py-2 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 ${isLeft ? 'ml-14' : 'mr-14'}`}>
+        <div className={`mt-2 flex items-center justify-between gap-3 bg-white dark:bg-slate-800 px-4 py-2 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 ${isLeft ? 'ml-14' : 'mr-14'}`}>
            <span className="font-extrabold text-slate-800 dark:text-white text-base">{phrase.translation}</span>
            <button
              onClick={() => playAudio(phrase.translation, 'en-US')}
-             className="p-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-full text-indigo-600 dark:text-indigo-300 transition-colors"
+             className="flex items-center gap-1 px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-black transition-all cursor-pointer shrink-0"
              aria-label={`Play English pronunciation for ${phrase.translation}`}
            >
-             <Languages className="w-4 h-4" />
+             <Languages className="w-4 h-4 text-indigo-600 shrink-0" />
+             <span>EN</span>
            </button>
         </div>
 

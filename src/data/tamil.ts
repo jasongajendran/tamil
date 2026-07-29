@@ -13,6 +13,7 @@ export const vowels: Letter[] = [
   { id: 'v10', tamil: 'ஒ', english: 'o', exampleTamil: 'ஒட்டகம்', exampleEnglish: 'Ottagam', translation: 'Camel', emoji: '🐪', type: 'vowel' },
   { id: 'v11', tamil: 'ஓ', english: 'oo', exampleTamil: 'ஓடம்', exampleEnglish: 'Oodam', translation: 'Boat', emoji: '🛶', type: 'vowel' },
   { id: 'v12', tamil: 'ஔ', english: 'au', exampleTamil: 'ஔவையார்', exampleEnglish: 'Avvaiyar', translation: 'Poetess', emoji: '👵', type: 'vowel' },
+  { id: 'v13', tamil: 'ஃ', english: 'ak', exampleTamil: 'எஃகு', exampleEnglish: 'Ehgu', translation: 'Steel / Sword (Aayutha Ezhuthu)', emoji: '⚔️', type: 'vowel' },
 ];
 
 export const consonants: Letter[] = [
@@ -119,6 +120,27 @@ export const family: CategoryItem[] = [
   { id: 'f11', tamil: 'நண்பன்', english: 'Nanban', translation: 'Friend', emoji: '🧑‍🤝‍🧑' },
 ];
 
+export const vehicles: CategoryItem[] = [
+  { id: 'vh1', tamil: 'பஸ்', english: 'Bus', translation: 'Bus', emoji: '🚌' },
+  { id: 'vh2', tamil: 'கார்', english: 'Car', translation: 'Car', emoji: '🚗' },
+  { id: 'vh3', tamil: 'இரயில்', english: 'Irayil', translation: 'Train', emoji: '🚂' },
+  { id: 'vh4', tamil: 'விமானம்', english: 'Vimaanam', translation: 'Aeroplane', emoji: '✈️' },
+  { id: 'vh5', tamil: 'மிதிவண்டி', english: 'Mithivandi', translation: 'Bicycle', emoji: '🚲' },
+  { id: 'vh6', tamil: 'கப்பல்', english: 'Kappal', translation: 'Ship', emoji: '🚢' },
+  { id: 'vh7', tamil: 'ஆட்டோ', english: 'Aatto', translation: 'Auto Rickshaw', emoji: '🛺' },
+];
+
+export const bodyParts: CategoryItem[] = [
+  { id: 'bp1', tamil: 'கண்', english: 'Kan', translation: 'Eye', emoji: '👁️' },
+  { id: 'bp2', tamil: 'காது', english: 'Kaathu', translation: 'Ear', emoji: '👂' },
+  { id: 'bp3', tamil: 'மூக்கு', english: 'Mookku', translation: 'Nose', emoji: '👃' },
+  { id: 'bp4', tamil: 'வாய்', english: 'Vaay', translation: 'Mouth', emoji: '👄' },
+  { id: 'bp5', tamil: 'கை', english: 'Kai', translation: 'Hand', emoji: '🤚' },
+  { id: 'bp6', tamil: 'கால்', english: 'Kaal', translation: 'Leg / Foot', emoji: '🦶' },
+  { id: 'bp7', tamil: 'தலை', english: 'Thalai', translation: 'Head', emoji: '🗣️' },
+  { id: 'bp8', tamil: 'பல்', english: 'Pal', translation: 'Tooth', emoji: '🦷' },
+];
+
 export const phrases: Phrase[] = [
   { id: 'p1', tamil: 'வணக்கம்', english: 'Vanakkam', translation: 'Hello / Greetings', emoji: '🙏', category: 'Greetings' },
   { id: 'p2', tamil: 'நன்றி', english: 'Nandri', translation: 'Thank you', emoji: '🙌', category: 'Manners' },
@@ -132,6 +154,14 @@ export const phrases: Phrase[] = [
   { id: 'p10', tamil: 'தயவுசெய்து', english: 'Dhayavu seidhu', translation: 'Please', emoji: '🥺', category: 'Manners' },
   { id: 'p11', tamil: 'மீண்டும் சந்திப்போம்', english: 'Meendum santhippom', translation: 'See you again!', emoji: '👋', category: 'Greetings' },
   { id: 'p12', tamil: 'எனக்கு புரியவில்லை', english: 'Enakku puriyavillai', translation: 'I do not understand', emoji: '🤷‍♂️', category: 'Responses' },
+  { id: 'p13', tamil: 'வாருங்கள்', english: 'Vaarungal', translation: 'Welcome!', emoji: '🤗', category: 'Greetings' },
+  { id: 'p14', tamil: 'போய் வருகிறேன்', english: 'Poi varugiren', translation: 'Goodbye / See you', emoji: '🏃‍♂️', category: 'Greetings' },
+  { id: 'p15', tamil: 'மன்னித்துக்கொள்ளுங்கள்', english: 'Mannithukollungal', translation: 'Sorry / Excuse me', emoji: '🙏', category: 'Manners' },
+  { id: 'p16', tamil: 'எவ்வளவு?', english: 'Evvalavu?', translation: 'How much?', emoji: '💰', category: 'Questions' },
+  { id: 'p17', tamil: 'சாப்பிட்டீர்களா?', english: 'Saappitteergala?', translation: 'Have you eaten?', emoji: '🍲', category: 'Questions' },
+  { id: 'p18', tamil: 'எனக்கு உதவி வேண்டும்', english: 'Enakku udhavi vaendum', translation: 'I need help', emoji: '🆘', category: 'Requests' },
+  { id: 'p19', tamil: 'அற்புதமாக இருக்கிறது', english: 'Arputhamaga irukkirathu', translation: 'It is wonderful!', emoji: '✨', category: 'Responses' },
+  { id: 'p20', tamil: 'எனக்கு பசிக்கிறது', english: 'Enakku pasikkirathu', translation: 'I am hungry', emoji: '😋', category: 'Responses' },
 ];
 
 export const combinationsSample: Combination[] = [

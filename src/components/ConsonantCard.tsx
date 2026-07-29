@@ -30,26 +30,27 @@ export function ConsonantCard({ letter, index }: ConsonantCardProps) {
       transition={{ duration: 0.3, delay: index * 0.03 }}
       className={`bg-white rounded-2xl p-5 border-4 ${colorClass} shadow-[4px_4px_0px_0px] hover:shadow-[8px_8px_0px_0px] hover:-translate-y-1 transition-all flex flex-col justify-between`}
     >
-      <div className="flex justify-between items-start mb-3">
-        <div className="min-w-[5rem] px-2 h-20 rounded-xl border-4 border-slate-900 flex items-center justify-center bg-amber-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-4xl sm:text-5xl font-black text-slate-900">{letter.tamil}</h2>
+      <div className="flex justify-between items-start mb-3 gap-2">
+        <div className="min-w-[5.5rem] px-3 py-2 min-h-[5rem] rounded-xl border-4 border-slate-900 flex items-center justify-center bg-amber-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 leading-none">{letter.tamil}</h2>
         </div>
         <div className="flex flex-col gap-1.5">
           <button
             onClick={() => playAudio(letter.tamil, 'ta-IN')}
             title="Normal pronunciation (1x speed)"
-            className="p-2.5 rounded-xl border-2 border-slate-900 bg-emerald-300 hover:bg-emerald-400 text-slate-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all flex items-center justify-center"
+            className="px-3 py-1.5 rounded-xl border-2 border-slate-900 bg-emerald-300 hover:bg-emerald-400 text-slate-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all flex items-center justify-center gap-1.5 font-black text-xs cursor-pointer"
             aria-label={`Play pronunciation for ${letter.tamil}`}
           >
-            <Volume2 className="w-5 h-5" />
+            <Volume2 className="w-5 h-5 shrink-0" />
+            <span>Listen</span>
           </button>
           <button
             onClick={() => playAudio(letter.tamil, 'ta-IN', true)}
             title="Slow pronunciation (0.5x speed)"
-            className="px-2 py-1.5 rounded-xl border-2 border-slate-900 bg-sky-200 hover:bg-sky-300 text-slate-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all flex items-center justify-center gap-1 text-xs font-black"
+            className="px-2.5 py-1.5 rounded-xl border-2 border-slate-900 bg-sky-200 hover:bg-sky-300 text-slate-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all flex items-center justify-center gap-1 text-xs font-black cursor-pointer"
             aria-label={`Play slow Tamil pronunciation for ${letter.tamil}`}
           >
-            <Turtle className="w-3.5 h-3.5 text-emerald-800" />
+            <Turtle className="w-4 h-4 text-emerald-800 shrink-0" />
             <span>0.5x</span>
           </button>
         </div>
@@ -67,10 +68,11 @@ export function ConsonantCard({ letter, index }: ConsonantCardProps) {
               <span className="text-lg font-black text-slate-900">{letter.exampleTamil}</span>
               <button
                 onClick={() => playAudio(letter.exampleTamil, 'ta-IN')}
-                className="p-1 text-slate-600 hover:text-indigo-600 transition-colors"
+                className="px-2 py-0.5 rounded-lg border-2 border-slate-900 bg-indigo-200 hover:bg-indigo-300 text-slate-900 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-1 font-black text-xs cursor-pointer"
                 aria-label={`Play pronunciation for ${letter.exampleTamil}`}
               >
-                <Volume2 className="w-4 h-4" />
+                <Volume2 className="w-3.5 h-3.5 shrink-0" />
+                <span>Listen</span>
               </button>
             </div>
             <p className="text-xs font-bold text-slate-500">/{letter.exampleEnglish}/</p>
@@ -81,10 +83,11 @@ export function ConsonantCard({ letter, index }: ConsonantCardProps) {
           <span className="font-extrabold text-slate-900 text-sm truncate">{letter.translation}</span>
           <button
             onClick={() => playAudio(letter.translation, 'en-US')}
-            className="p-1.5 rounded-lg border-2 border-slate-900 bg-white hover:bg-slate-50 transition-colors shrink-0"
+            className="px-2 py-1 rounded-lg border-2 border-slate-900 bg-white hover:bg-slate-100 text-slate-900 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-1 font-black text-xs shrink-0 cursor-pointer"
             aria-label={`Play English pronunciation for ${letter.translation}`}
           >
-            <Languages className="w-3.5 h-3.5 text-slate-900" />
+            <Languages className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+            <span>EN</span>
           </button>
         </div>
       </div>

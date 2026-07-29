@@ -110,9 +110,10 @@ export default function App() {
               exit={{ opacity: 0, x: 20 }}
             >
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-black text-pink-600 dark:text-pink-400 mb-2">Uyir Ezhuthukkal (Vowels)</h2>
+                <h2 className="text-3xl font-black text-pink-600 dark:text-pink-400 mb-1">Uyir Ezhuthukkal & Aayutha Ezhuthu</h2>
+                <p className="text-2xl font-black text-pink-500/90 dark:text-pink-300 font-serif tracking-wide mb-2">உயிர் எழுத்துகள் & ஆய்த எழுத்து (ஃ)</p>
                 <p className="text-slate-600 dark:text-slate-300 font-bold max-w-xl mx-auto text-sm sm:text-base">
-                  These 12 vowels are the "Soul" (Uyir) of Tamil. Tap any letter or word to hear its sound! 🎈
+                  12 Vowels (Soul of Tamil) plus the special Aayutha Ezhuthu (ஃ - Akku). Tap any letter or word to hear its sound! 🎈
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -132,7 +133,8 @@ export default function App() {
               exit={{ opacity: 0, x: 20 }}
             >
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-black text-amber-600 dark:text-amber-400 mb-2">Mei Ezhuthukkal (Consonants)</h2>
+                <h2 className="text-3xl font-black text-amber-600 dark:text-amber-400 mb-1">Mei Ezhuthukkal (Consonants)</h2>
+                <p className="text-2xl font-black text-amber-600/90 dark:text-amber-300 font-serif tracking-wide mb-2">மெய் எழுத்துகள்</p>
                 <p className="text-slate-600 dark:text-slate-300 font-bold max-w-xl mx-auto text-sm sm:text-base">
                   These 18 solid building blocks are the "Body" (Mei) of Tamil. Look for the dot (Pulli) on top! 🧱
                 </p>

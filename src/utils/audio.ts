@@ -2,6 +2,7 @@ let activeAudio: HTMLAudioElement | null = null;
 const clientAudioCache = new Map<string, string>();
 
 const CONSONANT_PHONETIC_MAP: Record<string, string> = {
+  'ஃ': 'அக்கு',
   'க்': 'இக்',
   'ங்': 'இங்',
   'ச்': 'இச்',

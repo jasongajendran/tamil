@@ -140,12 +140,9 @@ app.post("/api/tts", async (req, res) => {
     const ai = getGenAI();
     if (ai) {
       try {
-        const isTamil = lang === 'ta-IN' || /[\u0B80-\u0BFF]/.test(text);
-        const promptText = isTamil
-          ? slowMode
-            ? `Pronounce the following Tamil letter or word slowly and clearly for a language student at half speed: "${text}".`
-            : `Pronounce the following Tamil letter or word clearly with authentic native Tamil pronunciation: "${text}".`
-          : `Say the following clearly: "${text}".`;
+        // Gemini TTS synthesizes prompt text verbatim as spoken audio.
+        // We pass ONLY the exact target text (e.g. 'எ' or 'கௌதாரி') so no English instructions are spoken out loud.
+        const promptText = text;
 
         const response = await ai.models.generateContent({
           model: "gemini-3.1-flash-tts-preview",

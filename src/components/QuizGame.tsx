@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Volume2, Trophy, Sparkles, RefreshCw, CheckCircle2, XCircle, Star } from 'lucide-react';
-import { vowels, consonants, numbers, animals, colors, family } from '../data/tamil';
+import { vowels, consonants, numbers, commonWords, fruitsVeggies, colors, animals, family, vehicles, bodyParts, phrases } from '../data/tamil';
 import { playAudio } from '../utils/audio';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -25,8 +25,16 @@ export function QuizGame() {
     setSelectedOption(null);
     setIsCorrect(null);
 
-    // Pool of actual words (not letters) for accurate translation/emoji matching
-    const pool = [...numbers, ...animals, ...colors, ...family];
+    // Rich pool combining all category items and phrases
+    const letterItems = vowels.map(v => ({ tamil: v.tamil, translation: `${v.translation} (${v.exampleTamil})`, emoji: v.emoji }));
+    const phraseItems = phrases.map(p => ({ tamil: p.tamil, translation: p.translation, emoji: p.emoji }));
+    const categoryItems = [...numbers, ...commonWords, ...fruitsVeggies, ...colors, ...animals, ...family, ...vehicles, ...bodyParts].map(c => ({
+      tamil: c.tamil,
+      translation: c.translation,
+      emoji: c.emoji
+    }));
+
+    const pool = [...categoryItems, ...phraseItems, ...letterItems];
     const randomIndex = Math.floor(Math.random() * pool.length);
     const target = pool[randomIndex];
 
@@ -42,7 +50,7 @@ export function QuizGame() {
     // Shuffle options
     const options = [...distractors, target.tamil].sort(() => Math.random() - 0.5);
 
-    const types: ('audio' | 'word' | 'emoji')[] = ['audio', 'word', 'emoji'];
+    const types: ('audio' | 'word' | 'emoji')[] = target.emoji ? ['audio', 'word', 'emoji'] : ['audio', 'word'];
     const type = types[Math.floor(Math.random() * types.length)];
 
     const q: Question = {
