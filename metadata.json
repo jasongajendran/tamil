@@ -1,0 +1,6 @@
+{
+  "name": "Tamil Master",
+  "description": "A comprehensive app to learn Tamil from scratch with pronunciation, examples, and text-to-speech.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
