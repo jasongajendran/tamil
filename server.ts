@@ -164,10 +164,8 @@ app.post("/api/tts", async (req, res) => {
           return res.json({ audioUrl: wavDataUri });
         }
       } catch (genAiError: any) {
-        // Quietly handle rate limits (429) or model unavailability by falling back to server audio proxy
-        if (genAiError?.status !== 429 && !genAiError?.message?.includes("quota")) {
-          console.warn("Gemini TTS fallback activated:", genAiError?.message || genAiError);
-        }
+        // Handle rate limits (429), high demand (503), or quota issues seamlessly by falling back to audio proxy
+        // Do not flood console with error messages for expected fallback behavior
       }
     }
 
