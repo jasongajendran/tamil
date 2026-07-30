@@ -71,16 +71,23 @@ export function PhraseCard({ phrase, index }: PhraseCardProps) {
           )}
         </div>
 
-        <div className={`mt-2 flex items-center justify-between gap-3 bg-white dark:bg-slate-800 px-4 py-2 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 ${isLeft ? 'ml-14' : 'mr-14'}`}>
-           <span className="font-extrabold text-slate-800 dark:text-white text-base">{phrase.translation}</span>
-           <button
-             onClick={() => playAudio(phrase.translation, 'en-US')}
-             className="flex items-center gap-1 px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-black transition-all cursor-pointer shrink-0"
-             aria-label={`Play English pronunciation for ${phrase.translation}`}
-           >
-             <Languages className="w-4 h-4 text-indigo-600 shrink-0" />
-             <span>EN</span>
-           </button>
+        <div className={`mt-2 flex flex-col gap-1 bg-white dark:bg-slate-800 px-4 py-2.5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 ${isLeft ? 'ml-14' : 'mr-14'}`}>
+          <div className="flex items-center justify-between gap-3">
+            <span className="font-extrabold text-slate-800 dark:text-white text-base">{phrase.translation}</span>
+            <button
+              onClick={() => playAudio(phrase.translation, 'en-US')}
+              className="flex items-center gap-1 px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-black transition-all cursor-pointer shrink-0"
+              aria-label={`Play English pronunciation for ${phrase.translation}`}
+            >
+              <Languages className="w-4 h-4 text-indigo-600 shrink-0" />
+              <span>EN</span>
+            </button>
+          </div>
+          {phrase.contextNote && (
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 italic border-t border-slate-100 dark:border-slate-700/60 pt-1.5 mt-1">
+              💡 {phrase.contextNote}
+            </p>
+          )}
         </div>
 
       </div>

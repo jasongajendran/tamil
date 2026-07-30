@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Volume2, Trophy, Sparkles, RefreshCw, CheckCircle2, XCircle, Star } from 'lucide-react';
-import { vowels, consonants, numbers, commonWords, fruitsVeggies, colors, animals, family, vehicles, bodyParts, phrases } from '../data/tamil';
+import { 
+  vowels, consonants, numbers, commonWords, fruitsVeggies, colors, animals, family, vehicles, bodyParts, 
+  daysOfWeek, verbs, nature, shapesDirections, phrases 
+} from '../data/tamil';
 import { playAudio } from '../utils/audio';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -28,7 +31,11 @@ export function QuizGame() {
     // Rich pool combining all category items and phrases
     const letterItems = vowels.map(v => ({ tamil: v.tamil, translation: `${v.translation} (${v.exampleTamil})`, emoji: v.emoji }));
     const phraseItems = phrases.map(p => ({ tamil: p.tamil, translation: p.translation, emoji: p.emoji }));
-    const categoryItems = [...numbers, ...commonWords, ...fruitsVeggies, ...colors, ...animals, ...family, ...vehicles, ...bodyParts].map(c => ({
+    const categoryItems = [
+      ...numbers, ...commonWords, ...fruitsVeggies, ...colors, 
+      ...animals, ...family, ...vehicles, ...bodyParts,
+      ...daysOfWeek, ...verbs, ...nature, ...shapesDirections
+    ].map(c => ({
       tamil: c.tamil,
       translation: c.translation,
       emoji: c.emoji

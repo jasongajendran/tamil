@@ -56,8 +56,15 @@ export function ConsonantCard({ letter, index }: ConsonantCardProps) {
         </div>
       </div>
 
-      <div className="inline-block border-2 border-slate-900 px-3 py-1 bg-yellow-200 font-black text-slate-900 mb-3 self-start rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-xs">
-        /{letter.english}/
+      <div className="flex items-center gap-2 mb-3">
+        <div className="inline-block border-2 border-slate-900 px-3 py-1 bg-yellow-200 font-black text-slate-900 rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-xs">
+          /{letter.english}/
+        </div>
+        {letter.categoryLabel && (
+          <div className="inline-block border-2 border-slate-900 px-2.5 py-1 bg-purple-100 font-extrabold text-purple-900 rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-[11px] truncate">
+            {letter.categoryLabel}
+          </div>
+        )}
       </div>
 
       <div className="border-t-2 border-slate-200 pt-3 mt-auto">

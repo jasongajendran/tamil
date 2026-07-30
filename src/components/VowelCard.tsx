@@ -29,11 +29,11 @@ export function VowelCard({ letter, index }: VowelCardProps) {
       transition={{ type: "spring", bounce: 0.4, delay: index * 0.04 }}
       className={`${colorScheme} rounded-[2.5rem] p-6 shadow-xl border-4 relative overflow-hidden group hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between`}
     >
-      <div className="flex justify-between items-center mb-4">
-        <span className="text-xs font-black uppercase tracking-wider px-3 py-1 bg-white/70 rounded-full shadow-sm text-slate-800">
-          Vowel #{index + 1}
+      <div className="flex justify-between items-center mb-4 gap-2">
+        <span className="text-[11px] font-black uppercase tracking-wider px-3 py-1 bg-white/80 rounded-full shadow-sm text-slate-900 border border-white/60 truncate">
+          {letter.categoryLabel || `Vowel #${index + 1}`}
         </span>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           <button
             onClick={() => playAudio(letter.tamil, 'ta-IN', true)}
             title="Slow pronunciation (0.5x speed)"

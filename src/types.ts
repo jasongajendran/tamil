@@ -1,3 +1,6 @@
+export type VowelCategory = 'kuril' | 'nedil' | 'aayutham';
+export type ConsonantCategory = 'vallinam' | 'mellinam' | 'idaiyinam';
+
 export interface Letter {
   id: string;
   tamil: string;
@@ -7,6 +10,8 @@ export interface Letter {
   translation: string;
   emoji: string;
   type: 'vowel' | 'consonant';
+  category?: VowelCategory | ConsonantCategory;
+  categoryLabel?: string;
 }
 
 export interface Phrase {
@@ -16,6 +21,7 @@ export interface Phrase {
   translation: string;
   emoji: string;
   category?: string;
+  contextNote?: string;
 }
 
 export interface CategoryItem {
@@ -27,6 +33,7 @@ export interface CategoryItem {
   color?: string;
   numberVal?: number;
   tamilNumeral?: string;
+  grammaticalType?: string;
 }
 
 export interface Combination {
