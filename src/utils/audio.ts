@@ -1,11 +1,9 @@
 // Shared Audio Context & Active References for iOS WebKit & Cross-Platform compatibility
 let globalAudioCtx: AudioContext | null = null;
-let activeSourceNode: AudioBufferSourceNode | null = null;
-let activeAudioElement: HTMLAudioElement | null = null;
+let sharedAudioElement: HTMLAudioElement | null = null;
 let isAudioUnlocked = false;
 
 const clientAudioCache = new Map<string, string>();
-const decodedBufferCache = new Map<string, AudioBuffer>();
 
 const CONSONANT_PHONETIC_MAP: Record<string, string> = {
   'ஃ': 'அக்கு',
@@ -48,48 +46,80 @@ export function getAudioContext(): AudioContext | null {
   return globalAudioCtx;
 }
 
-// Explicit unlocker function to warm up Web Audio API & Web Speech API on user gesture (iOS Safari requirement)
+// Get or create a single pre-unlocked HTMLAudioElement for iOS Safari
+function getSharedAudioElement(): HTMLAudioElement | null {
+  if (typeof window === 'undefined') return null;
+  if (!sharedAudioElement) {
+    sharedAudioElement = new Audio();
+    // Warm up element with 0.1s silent WAV data URI
+    sharedAudioElement.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+  }
+  return sharedAudioElement;
+}
+
+// Pre-fetch speech voices for iOS WebKit engine
+let cachedVoices: SpeechSynthesisVoice[] = [];
+function loadVoices() {
+  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    cachedVoices = window.speechSynthesis.getVoices();
+  }
+}
+
+if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+  loadVoices();
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }
+}
+
+// Synchronous audio unlocker function for iOS Safari user gesture compliance
 export function unlockAudio() {
   if (typeof window === 'undefined') return;
 
+  // 1. Unlock Web Audio API context
   try {
     const ctx = getAudioContext();
-    if (ctx) {
-      if (ctx.state === 'suspended') {
-        ctx.resume().catch(() => {});
-      }
-      // Play 1 frame of silent buffer to unlock iOS Safari Web Audio engine permanently
-      if (!isAudioUnlocked) {
-        const buffer = ctx.createBuffer(1, 1, 22050);
-        const source = ctx.createBufferSource();
-        source.buffer = buffer;
-        source.connect(ctx.destination);
-        source.start(0);
-        isAudioUnlocked = true;
-      }
+    if (ctx && ctx.state === 'suspended') {
+      ctx.resume().catch(() => {});
+    }
+    if (ctx && !isAudioUnlocked) {
+      const buffer = ctx.createBuffer(1, 1, 22050);
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(ctx.destination);
+      source.start(0);
+      isAudioUnlocked = true;
     }
   } catch (err) {
-    console.warn('AudioContext unlock attempt:', err);
+    console.warn('AudioContext unlock:', err);
   }
 
-  // Pre-warm Web Speech API on iOS Safari
+  // 2. Unlock HTML5 Audio element on user gesture
+  try {
+    const audio = getSharedAudioElement();
+    if (audio) {
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+    }
+  } catch {
+    // Ignore unlock catch
+  }
+
+  // 3. Pre-warm Web Speech API on iOS Safari
   if ('speechSynthesis' in window) {
     try {
       window.speechSynthesis.resume();
-      if (!isAudioUnlocked) {
-        const silentUtterance = new SpeechSynthesisUtterance('');
-        silentUtterance.volume = 0;
-        window.speechSynthesis.speak(silentUtterance);
-      }
     } catch {
       // Ignore fallback pre-warm error
     }
   }
 }
 
-// Register global user gesture listeners to auto-unlock on first tap/click on iOS devices
+// Register global user gesture listeners to auto-unlock on first tap/touch on iOS devices
 if (typeof window !== 'undefined') {
-  const unlockEvents = ['touchstart', 'touchend', 'pointerdown', 'mousedown', 'keydown', 'click'];
+  const unlockEvents = ['touchstart', 'touchend', 'pointerdown', 'mousedown', 'click'];
   const handleUserGesture = () => {
     unlockAudio();
     unlockEvents.forEach((evt) => window.removeEventListener(evt, handleUserGesture));
@@ -99,54 +129,45 @@ if (typeof window !== 'undefined') {
   });
 }
 
-// Stop any currently active playback (Web Audio source node, HTML5 Audio element, or SpeechSynthesis)
+// Stop any currently playing speech or HTML audio
 function stopAllAudio() {
-  if (activeSourceNode) {
+  if (sharedAudioElement) {
     try {
-      activeSourceNode.stop();
-      activeSourceNode.disconnect();
+      sharedAudioElement.pause();
+      sharedAudioElement.currentTime = 0;
     } catch {
-      // Ignore already stopped
+      // Ignore
     }
-    activeSourceNode = null;
-  }
-
-  if (activeAudioElement) {
-    try {
-      activeAudioElement.pause();
-      activeAudioElement.currentTime = 0;
-    } catch {
-      // Ignore pause failure
-    }
-    activeAudioElement = null;
   }
 
   if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
     try {
       window.speechSynthesis.cancel();
     } catch {
-      // Ignore cancel failure
+      // Ignore
     }
   }
 }
 
-// Select best Tamil/English voice for SpeechSynthesis on iOS Safari / WebKit
-function getVoice(lang: string): SpeechSynthesisVoice | null {
+// Find best matching voice for Tamil/English on iOS Safari
+function findBestVoice(lang: string): SpeechSynthesisVoice | null {
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) return null;
-  const voices = window.speechSynthesis.getVoices();
-  const normalizedLang = lang.toLowerCase().replace('_', '-');
+
+  const voices = cachedVoices.length > 0 ? cachedVoices : window.speechSynthesis.getVoices();
+  const targetLang = lang.toLowerCase().replace('_', '-');
+  const shortLang = targetLang.slice(0, 2);
 
   return (
-    voices.find((v) => v.lang.toLowerCase().replace('_', '-') === normalizedLang) ||
-    voices.find((v) => v.lang.toLowerCase().startsWith(normalizedLang.slice(0, 2))) ||
+    voices.find((v) => v.lang.toLowerCase().replace('_', '-') === targetLang) ||
+    voices.find((v) => v.lang.toLowerCase().startsWith(shortLang)) ||
     voices.find((v) => v.name.toLowerCase().includes('tamil')) ||
     null
   );
 }
 
-// Fallback SpeechSynthesis execution optimized for iOS Safari
-function playSpeechSynthesis(text: string, lang: 'ta-IN' | 'en-US', slowMode: boolean) {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+// Synchronously trigger Web Speech API (iOS Safari requires sync call in click handler)
+function speakWebSpeechSync(text: string, lang: 'ta-IN' | 'en-US', slowMode: boolean): boolean {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return false;
 
   try {
     window.speechSynthesis.cancel();
@@ -154,60 +175,59 @@ function playSpeechSynthesis(text: string, lang: 'ta-IN' | 'en-US', slowMode: bo
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang;
-    utterance.rate = slowMode ? 0.7 : 1.0;
+    utterance.rate = slowMode ? 0.6 : 0.9;
     utterance.pitch = 1.0;
 
-    const voice = getVoice(lang);
+    const voice = findBestVoice(lang);
     if (voice) {
       utterance.voice = voice;
     }
 
     window.speechSynthesis.speak(utterance);
+    return true;
   } catch (err) {
-    console.warn('SpeechSynthesis playback error:', err);
+    console.warn('WebSpeech API sync speak error:', err);
+    return false;
   }
+}
+
+// Detect if running on static host (e.g. GitHub Pages) where backend Express API routes do not exist
+function checkIsStaticHosting(): boolean {
+  if (typeof window === 'undefined') return false;
+  const host = window.location.hostname;
+  return host.includes('github.io') || host.includes('netlify') || host.includes('vercel') || host.includes('pages.dev');
 }
 
 export const playAudio = async (text: string, lang: 'ta-IN' | 'en-US' = 'ta-IN', slowMode: boolean = false) => {
   if (typeof window === 'undefined' || !text) return;
 
-  // 1. Synchronous unlock on gesture turn for iOS Safari
+  // CRITICAL STEP FOR iOS SAFARI: Unlock audio context & speech synthesis SYNCHRONOUSLY
   unlockAudio();
-  const ctx = getAudioContext();
-  if (ctx && ctx.state === 'suspended') {
-    ctx.resume().catch(() => {});
-  }
 
-  // 2. Stop any ongoing audio playback
+  // Stop previous sounds
   stopAllAudio();
 
   const cleanText = normalizeTamil(text);
   const cacheKey = `${lang}_${cleanText}`;
+  const isStaticHost = checkIsStaticHosting();
 
-  // Check if we have an in-memory decoded Web Audio buffer
-  if (ctx && decodedBufferCache.has(cacheKey)) {
-    try {
-      const buffer = decodedBufferCache.get(cacheKey)!;
-      const source = ctx.createBufferSource();
-      source.buffer = buffer;
-      source.playbackRate.value = slowMode ? 0.7 : 1.0;
-      source.connect(ctx.destination);
-      source.start(0);
-      activeSourceNode = source;
-      return;
-    } catch (e) {
-      console.warn('WebAudio cached buffer play failed:', e);
-    }
+  // ON GITHUB PAGES / STATIC HOSTING:
+  // Backend Express routes (/api/tts) do NOT exist on static hosts.
+  // iOS Safari invalidates user gestures if we wait for an async fetch that 404s.
+  // Therefore, on static hosts or iOS, we trigger Web Speech API SYNCHRONOUSLY right now!
+  if (isStaticHost) {
+    const spoke = speakWebSpeechSync(cleanText, lang, slowMode);
+    if (spoke) return;
   }
 
-  // Find or generate audio URL
+  // Check client-side audio cache
   let audioUrl = clientAudioCache.get(cacheKey);
 
-  if (!audioUrl) {
-    // Try server /api/tts endpoint first with a quick timeout (for full-stack dev/Cloud Run host)
+  // If not static host (or WebSpeech wasn't handled), attempt backend TTS endpoint with fast 400ms timeout
+  if (!audioUrl && !isStaticHost) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 1500);
+      const timeoutId = setTimeout(() => controller.abort(), 400);
 
       const res = await fetch('/api/tts', {
         method: 'POST',
@@ -218,73 +238,52 @@ export const playAudio = async (text: string, lang: 'ta-IN' | 'en-US' = 'ta-IN',
       clearTimeout(timeoutId);
 
       if (res.ok) {
-        const contentType = res.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const data = await res.json();
-          if (data.audioUrl) {
-            audioUrl = data.audioUrl;
-            clientAudioCache.set(cacheKey, audioUrl);
-          }
+        const data = await res.json();
+        if (data.audioUrl) {
+          audioUrl = data.audioUrl;
+          clientAudioCache.set(cacheKey, audioUrl);
         }
       }
     } catch {
-      // Express backend route not available (e.g. static site host like GitHub Pages)
+      // Backend unavailable or timed out (e.g. static site)
     }
   }
 
-  if (!audioUrl) {
-    // Direct Google Translate client-side audio stream fallback for static hosting
-    const tLang = lang === 'ta-IN' ? 'ta' : 'en';
-    audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=${tLang}&client=tw-ob`;
-  }
-
-  // 3. Attempt Web Audio API buffer decoding & playback (Bypasses iOS Safari async HTMLAudioElement gesture lock!)
-  if (ctx && audioUrl) {
-    try {
-      const audioResponse = await fetch(audioUrl);
-      if (audioResponse.ok) {
-        const arrayBuffer = await audioResponse.arrayBuffer();
-        const decodedBuffer = await new Promise<AudioBuffer>((resolve, reject) => {
-          ctx.decodeAudioData(arrayBuffer, resolve, reject);
-        });
-
-        decodedBufferCache.set(cacheKey, decodedBuffer);
-
-        // Ensure context is running
-        if (ctx.state === 'suspended') {
-          await ctx.resume();
-        }
-
-        const source = ctx.createBufferSource();
-        source.buffer = decodedBuffer;
-        source.playbackRate.value = slowMode ? 0.7 : 1.0;
-        source.connect(ctx.destination);
-        source.start(0);
-        activeSourceNode = source;
-        return;
-      }
-    } catch (webAudioErr) {
-      console.warn('Web Audio API decoding failed, attempting HTML5 Audio fallback:', webAudioErr);
-    }
-  }
-
-  // 4. Fallback: HTML5 Audio Element playback
+  // Play audio via pre-unlocked HTMLAudioElement if audioUrl is available
   if (audioUrl) {
     try {
-      const audio = new Audio(audioUrl);
-      audio.playbackRate = slowMode ? 0.7 : 1.0;
-      activeAudioElement = audio;
-
-      await audio.play();
-      return;
-    } catch (htmlAudioErr) {
-      console.warn('HTML5 Audio play failed, falling back to Web Speech API:', htmlAudioErr);
+      const audio = getSharedAudioElement();
+      if (audio) {
+        audio.src = audioUrl;
+        audio.playbackRate = slowMode ? 0.7 : 1.0;
+        await audio.play();
+        return;
+      }
+    } catch (err) {
+      console.warn('HTML5 Audio play failed:', err);
     }
   }
 
-  // 5. Ultimate Fallback: Web Speech API (SpeechSynthesis)
-  playSpeechSynthesis(cleanText, lang, slowMode);
+  // Direct Google Translate Audio URL Fallback for HTML5 Audio
+  const tLang = lang === 'ta-IN' ? 'ta' : 'en';
+  const directUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=${tLang}&client=tw-ob`;
+
+  try {
+    const audio = getSharedAudioElement();
+    if (audio) {
+      audio.src = directUrl;
+      audio.playbackRate = slowMode ? 0.7 : 1.0;
+      await audio.play();
+      return;
+    }
+  } catch {
+    // Fallback to Web Speech API
+  }
+
+  // Ultimate iOS Safari Fallback: Synchronous Web Speech API
+  speakWebSpeechSync(cleanText, lang, slowMode);
 };
 
 export const hasTamilVoice = (): boolean => true;
+
 
