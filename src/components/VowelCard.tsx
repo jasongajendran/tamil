@@ -1,5 +1,5 @@
 import React from 'react';
-import { Volume2, Languages, Turtle, Edit3 } from 'lucide-react';
+import { Volume2, Languages, Turtle } from 'lucide-react';
 import { Letter } from '../types';
 import { playAudio } from '../utils/audio';
 import { motion } from 'motion/react';
@@ -8,7 +8,6 @@ interface VowelCardProps {
   key?: React.Key;
   letter: Letter;
   index: number;
-  onOpenWritingGuide?: (tamil: string) => void;
 }
 
 const colors = [
@@ -20,7 +19,7 @@ const colors = [
   'bg-orange-200 border-orange-400 text-orange-900',
 ];
 
-export function VowelCard({ letter, index, onOpenWritingGuide }: VowelCardProps) {
+export function VowelCard({ letter, index }: VowelCardProps) {
   const colorScheme = colors[index % colors.length];
 
   return (
@@ -32,7 +31,7 @@ export function VowelCard({ letter, index, onOpenWritingGuide }: VowelCardProps)
     >
       <div className="flex justify-between items-center mb-4">
         <span className="text-xs font-black uppercase tracking-wider px-3 py-1 bg-white/70 rounded-full shadow-sm text-slate-800">
-          {letter.tamil === 'ஃ' ? 'Aayutha Ezhuthu' : `Vowel #${index + 1}`}
+          Vowel #{index + 1}
         </span>
         <div className="flex items-center gap-1.5">
           <button
@@ -66,21 +65,8 @@ export function VowelCard({ letter, index, onOpenWritingGuide }: VowelCardProps)
           <h2 className={`font-black text-slate-900 drop-shadow-sm leading-none ${letter.tamil.length > 1 ? 'text-4xl sm:text-5xl' : 'text-5xl sm:text-6xl'}`}>{letter.tamil}</h2>
         </button>
 
-        <div className="flex items-center gap-2 mt-2">
-          <div className="bg-white/80 px-4 py-1 rounded-full shadow-sm">
-            <p className="text-slate-800 font-extrabold text-base tracking-widest">/{letter.english}/</p>
-          </div>
-
-          {onOpenWritingGuide && (
-            <button
-              onClick={() => onOpenWritingGuide(letter.tamil)}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-900 rounded-full font-black text-xs shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer border border-amber-500/30"
-              title="See pencil writing animation and paper guide"
-            >
-              <Edit3 className="w-3.5 h-3.5" />
-              <span>How to Write</span>
-            </button>
-          )}
+        <div className="bg-white/80 px-4 py-1 rounded-full shadow-sm mt-2">
+          <p className="text-slate-800 font-extrabold text-base tracking-widest">/{letter.english}/</p>
         </div>
       </div>
 

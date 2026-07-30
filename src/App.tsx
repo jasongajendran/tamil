@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Shapes, MessageCircle, ArrowUp, Zap, Grid, Gamepad2, Volume2, PenTool } from 'lucide-react';
+import { Sparkles, Shapes, MessageCircle, ArrowUp, Zap, Grid, Gamepad2, Volume2 } from 'lucide-react';
 import { vowels, consonants, phrases } from './data/tamil';
 import { VowelCard } from './components/VowelCard';
 import { ConsonantCard } from './components/ConsonantCard';
@@ -7,7 +7,6 @@ import { CombinationBuilder } from './components/CombinationBuilder';
 import { FunCategoryGrid } from './components/FunCategoryGrid';
 import { PhraseCard } from './components/PhraseCard';
 import { QuizGame } from './components/QuizGame';
-import { WritingGuideModal } from './components/WritingGuideModal';
 import { motion, AnimatePresence } from 'motion/react';
 
 type Tab = 'vowels' | 'consonants' | 'combinations' | 'categories' | 'phrases' | 'quiz';
@@ -15,7 +14,6 @@ type Tab = 'vowels' | 'consonants' | 'combinations' | 'categories' | 'phrases' |
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('vowels');
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [writingModalTamil, setWritingModalTamil] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -114,27 +112,13 @@ export default function App() {
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-black text-pink-600 dark:text-pink-400 mb-1">Uyir Ezhuthukkal & Aayutha Ezhuthu</h2>
                 <p className="text-2xl font-black text-pink-500/90 dark:text-pink-300 font-serif tracking-wide mb-2">உயிர் எழுத்துகள் & ஆய்த எழுத்து (ஃ)</p>
-                <p className="text-slate-600 dark:text-slate-300 font-bold max-w-xl mx-auto text-sm sm:text-base mb-4">
+                <p className="text-slate-600 dark:text-slate-300 font-bold max-w-xl mx-auto text-sm sm:text-base">
                   12 Vowels (Soul of Tamil) plus the special Aayutha Ezhuthu (ஃ - Akku). Tap any letter or word to hear its sound! 🎈
                 </p>
-
-                {/* Prominent Pencil Writing Guide Banner */}
-                <button
-                  onClick={() => setWritingModalTamil('அ')}
-                  className="inline-flex items-center gap-2.5 px-6 py-3 bg-gradient-to-r from-amber-400 via-orange-400 to-pink-500 hover:from-amber-300 hover:to-pink-400 text-slate-900 font-black rounded-full shadow-lg border-2 border-white/80 transition-transform hover:scale-105 active:scale-95 cursor-pointer text-sm sm:text-base"
-                >
-                  <PenTool className="w-5 h-5 text-slate-900" />
-                  <span>✏️ Learn How to Write Vowels on Paper (Pencil Guide & Tracing)</span>
-                </button>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {vowels.map((letter, i) => (
-                  <VowelCard 
-                    key={letter.id} 
-                    letter={letter} 
-                    index={i} 
-                    onOpenWritingGuide={(t) => setWritingModalTamil(t)}
-                  />
+                  <VowelCard key={letter.id} letter={letter} index={i} />
                 ))}
               </div>
             </motion.div>
@@ -270,16 +254,6 @@ export default function App() {
           })}
         </div>
       </div>
-
-      {/* Writing & Tracing Guide Modal */}
-      <AnimatePresence>
-        {writingModalTamil && (
-          <WritingGuideModal
-            initialTamil={writingModalTamil}
-            onClose={() => setWritingModalTamil(null)}
-          />
-        )}
-      </AnimatePresence>
 
     </div>
   );
