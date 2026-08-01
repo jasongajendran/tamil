@@ -91,7 +91,8 @@ const ttsCache = new Map<string, string>();
 app.get("/api/proxy-audio", async (req, res) => {
   try {
     const rawText = (req.query.text as string) || "";
-    const lang = (req.query.lang as string) === "ta-IN" ? "ta" : "en";
+    const rawLang = (req.query.lang as string) || "ta-IN";
+    const lang = (rawLang === "ta-IN" || rawLang === "ta" || rawLang.startsWith("ta")) ? "ta" : "en";
     if (!rawText) {
       return res.status(400).send("Text parameter is required");
     }

@@ -217,7 +217,7 @@ export default function App() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
             onClick={scrollToTop}
-            className="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-50 p-3 bg-white/90 dark:bg-slate-800/90 text-indigo-600 dark:text-indigo-400 rounded-full shadow-2xl border-2 border-indigo-200 dark:border-slate-700 backdrop-blur-md focus:outline-none cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+            className="fixed bottom-24 md:bottom-8 right-4 sm:right-6 z-[60] p-3.5 bg-white/95 dark:bg-slate-800/95 text-indigo-600 dark:text-indigo-400 rounded-full shadow-2xl border-2 border-indigo-200 dark:border-slate-700 backdrop-blur-md focus:outline-none cursor-pointer hover:scale-110 active:scale-95 transition-transform"
             aria-label="Scroll to top"
           >
             <ArrowUp className="w-5 h-5" />

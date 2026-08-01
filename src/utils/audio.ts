@@ -1,5 +1,6 @@
 let activeAudio: HTMLAudioElement | null = null;
 const clientAudioCache = new Map<string, string>();
+const audioObjectCache = new Map<string, HTMLAudioElement>();
 
 const CONSONANT_PHONETIC_MAP: Record<string, string> = {
   'ஃ': 'அக்கு',
@@ -28,10 +29,29 @@ function normalizeTamil(text: string): string {
   return CONSONANT_PHONETIC_MAP[trimmed] || trimmed;
 }
 
-export const playAudio = async (text: string, lang: 'ta-IN' | 'en-US' = 'ta-IN', slowMode: boolean = false) => {
+export function getAudioStreamUrl(text: string, lang: 'ta-IN' | 'en-US' = 'ta-IN'): string {
+  const cleanText = normalizeTamil(text);
+  const tLang = lang === 'ta-IN' ? 'ta' : 'en';
+  return `/api/proxy-audio?text=${encodeURIComponent(cleanText)}&lang=${tLang}`;
+}
+
+export function preloadAudio(text: string, lang: 'ta-IN' | 'en-US' = 'ta-IN') {
+  if (typeof window === 'undefined' || !text) return;
+  const cleanText = normalizeTamil(text);
+  const cacheKey = `${lang}_norm_${cleanText}`;
+  if (!clientAudioCache.has(cacheKey)) {
+    const url = getAudioStreamUrl(cleanText, lang);
+    clientAudioCache.set(cacheKey, url);
+    const audio = new Audio(url);
+    audio.preload = 'auto';
+    audioObjectCache.set(cacheKey, audio);
+  }
+}
+
+export const playAudio = (text: string, lang: 'ta-IN' | 'en-US' = 'ta-IN', slowMode: boolean = false) => {
   if (typeof window === 'undefined' || !text) return;
 
-  // Stop any currently playing audio or speech
+  // Stop any currently playing audio or speech synthesis immediately
   if (activeAudio) {
     activeAudio.pause();
     activeAudio.currentTime = 0;
@@ -44,56 +64,49 @@ export const playAudio = async (text: string, lang: 'ta-IN' | 'en-US' = 'ta-IN',
   const cleanText = normalizeTamil(text);
   const cacheKey = `${lang}_${slowMode ? 'slow' : 'norm'}_${cleanText}`;
 
-  try {
-    let audioUrl = clientAudioCache.get(cacheKey);
+  let audioUrl = clientAudioCache.get(cacheKey);
+  if (!audioUrl) {
+    audioUrl = getAudioStreamUrl(cleanText, lang);
+    clientAudioCache.set(cacheKey, audioUrl);
+  }
 
-    if (!audioUrl) {
-      try {
-        const res = await fetch('/api/tts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: cleanText, lang, slowMode }),
-        });
+  let audio = audioObjectCache.get(cacheKey);
+  if (!audio) {
+    audio = new Audio(audioUrl);
+    audioObjectCache.set(cacheKey, audio);
+  } else {
+    audio.currentTime = 0;
+  }
 
-        if (res.ok) {
-          const contentType = res.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            const data = await res.json();
-            if (data.audioUrl) {
-              audioUrl = data.audioUrl;
-              clientAudioCache.set(cacheKey, audioUrl);
-            }
-          }
-        }
-      } catch (e) {
-        // Express backend route not available (e.g. static site host like GitHub Pages)
-      }
-    }
+  audio.playbackRate = slowMode ? 0.65 : 1.0;
+  activeAudio = audio;
 
-    if (!audioUrl) {
-      // Direct Google Translate client-side audio stream fallback for static hosting
-      const tLang = lang === 'ta-IN' ? 'ta' : 'en';
-      audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=${tLang}&client=tw-ob`;
-    }
-
-    const audio = new Audio(audioUrl);
-    if (slowMode) {
-      audio.playbackRate = 0.7;
-    }
-    activeAudio = audio;
-
-    await audio.play().catch(() => {
-      // Ultimate Web Speech API fallback
+  // Synchronously play audio inside user gesture handler for 0ms latency
+  const playPromise = audio.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+      // Instant Fallback to Web Speech API if HTML5 Audio encounters browser restrictions
       if ('speechSynthesis' in window) {
         const utterance = new SpeechSynthesisUtterance(cleanText);
         utterance.lang = lang;
-        if (slowMode) utterance.rate = 0.7;
+        if (slowMode) utterance.rate = 0.65;
         window.speechSynthesis.speak(utterance);
       }
     });
-  } catch (err) {
-    console.warn("TTS fallback execution:", err);
   }
 };
 
 export const hasTamilVoice = (): boolean => true;
+
+// Pre-warm audio cache in background for standard vowels & consonants
+if (typeof window !== 'undefined') {
+  const coreAlphabet = [
+    'அ', 'ஆ', 'இ', 'ஈ', 'உ', 'ஊ', 'எ', 'ஏ', 'ஐ', 'ஒ', 'ஓ', 'ஔ', 'ஃ',
+    'க்', 'ங்', 'ச்', 'ஞ்', 'ட்', 'ண்', 'த்', 'ந்', 'ப்', 'ம்', 'ய்', 'ர்', 'ல்', 'வ்', 'ழ்', 'ள்', 'ற்', 'ன்',
+    'வணக்கம்', 'நன்றி', 'ஒன்று', 'இரண்டு', 'மூன்று'
+  ];
+  setTimeout(() => {
+    coreAlphabet.forEach(char => preloadAudio(char, 'ta-IN'));
+  }, 500);
+}
+

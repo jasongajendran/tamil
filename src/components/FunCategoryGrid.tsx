@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Volume2, Languages, Hash, Palette, Dog, Users, BookOpen, Apple, Bus, Smile, Calendar, Activity, Trees, Compass, Search } from 'lucide-react';
+import { Volume2, Languages, Hash, Palette, Dog, Users, BookOpen, Apple, Bus, Smile, Calendar, Activity, Trees, Compass, Search, Utensils, Clock, Heart } from 'lucide-react';
 import { 
   numbers, commonWords, fruitsVeggies, colors, animals, family, vehicles, bodyParts, 
-  daysOfWeek, verbs, nature, shapesDirections 
+  daysOfWeek, verbs, nature, shapesDirections, foodTastes, timeTerms, emotions 
 } from '../data/tamil';
 import { playAudio } from '../utils/audio';
 import { motion, AnimatePresence } from 'motion/react';
@@ -20,7 +20,10 @@ type CategoryType =
   | 'days' 
   | 'verbs' 
   | 'nature' 
-  | 'shapes';
+  | 'shapes'
+  | 'food'
+  | 'time'
+  | 'emotions';
 
 export function FunCategoryGrid() {
   const [activeCategory, setActiveCategory] = useState<CategoryType>('numbers');
@@ -52,6 +55,12 @@ export function FunCategoryGrid() {
         return { title: 'Nature & Elements (Iyarkai / இயற்கை)', subtitle: 'Sun, Moon, Rain, Ocean, Mountains & Sky', items: nature };
       case 'shapes':
         return { title: 'Shapes & Directions (Vadiangal / வடிவங்கள்)', subtitle: 'Geometric shapes and cardinal directions', items: shapesDirections };
+      case 'food':
+        return { title: 'Food & Tastes (Unavu & Suvaigal / உணவு & சுவைகள்)', subtitle: 'Traditional South Indian cuisine & 6 tastes (Aru Suvai)', items: foodTastes };
+      case 'time':
+        return { title: 'Time & Calendar (Kaalam / காலம்)', subtitle: 'Periods of the day, past, present & future terms', items: timeTerms };
+      case 'emotions':
+        return { title: 'Emotions & Feelings (Unarchigal / உணர்ச்சிகள்)', subtitle: 'Human feelings, expressions & emotional states', items: emotions };
     }
   };
 
@@ -66,12 +75,15 @@ export function FunCategoryGrid() {
   const categoryTabs = [
     { id: 'numbers', label: 'Numbers (1-100)', icon: Hash, activeClass: 'bg-amber-400 text-slate-900' },
     { id: 'words', label: 'Everyday Words', icon: BookOpen, activeClass: 'bg-indigo-500 text-white' },
+    { id: 'food', label: 'Food & Tastes', icon: Utensils, activeClass: 'bg-amber-600 text-white' },
     { id: 'fruits', label: 'Fruits & Veggies', icon: Apple, activeClass: 'bg-red-500 text-white' },
     { id: 'colors', label: 'Colors', icon: Palette, activeClass: 'bg-pink-500 text-white' },
     { id: 'animals', label: 'Animals & Birds', icon: Dog, activeClass: 'bg-emerald-500 text-white' },
     { id: 'family', label: 'Family & People', icon: Users, activeClass: 'bg-sky-500 text-white' },
     { id: 'vehicles', label: 'Vehicles', icon: Bus, activeClass: 'bg-purple-500 text-white' },
     { id: 'bodyParts', label: 'Body Parts', icon: Smile, activeClass: 'bg-teal-500 text-white' },
+    { id: 'time', label: 'Time & Periods', icon: Clock, activeClass: 'bg-cyan-600 text-white' },
+    { id: 'emotions', label: 'Emotions & Feelings', icon: Heart, activeClass: 'bg-red-600 text-white' },
     { id: 'days', label: 'Days of Week', icon: Calendar, activeClass: 'bg-blue-600 text-white' },
     { id: 'verbs', label: 'Action Verbs', icon: Activity, activeClass: 'bg-rose-500 text-white' },
     { id: 'nature', label: 'Nature & Sky', icon: Trees, activeClass: 'bg-green-600 text-white' },

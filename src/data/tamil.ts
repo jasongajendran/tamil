@@ -82,11 +82,11 @@ export const commonWords: CategoryItem[] = [
   { id: 'w17', tamil: 'பணம்', english: 'Panam', translation: 'Money', emoji: '💵' },
   { id: 'w18', tamil: 'விளக்கு', english: 'Vilakku', translation: 'Lamp / Light', emoji: '🪔' },
   { id: 'w19', tamil: 'நாற்காலி', english: 'Naarkaali', translation: 'Chair', emoji: '🪑' },
-  { id: 'w20', tamil: 'மேஜை', english: 'Maejai', translation: 'Table', emoji: '🪮' },
+  { id: 'w20', tamil: 'மேஜை', english: 'Maejai', translation: 'Table', emoji: '🗄️' },
   { id: 'w21', tamil: 'கதவு', english: 'Kathavu', translation: 'Door', emoji: '🚪' },
   { id: 'w22', tamil: 'ஜன்னல்', english: 'Jannal', translation: 'Window', emoji: '🪟' },
   { id: 'w23', tamil: 'ஆடை', english: 'Aadai', translation: 'Clothes / Dress', emoji: '👗' },
-  { id: 'w24', tamil: 'செருப்பு', english: 'Seruppu', translation: 'Footwear / Shoes', emoji: '👟' },
+  { id: 'w24', tamil: 'செருப்பு', english: 'Seruppu', translation: 'Slipper / Sandals', emoji: '🩴' },
 ];
 
 export const fruitsVeggies: CategoryItem[] = [
@@ -120,7 +120,7 @@ export const colors: CategoryItem[] = [
   { id: 'clr9', tamil: 'இளஞ்சிவப்பு', english: 'Ilansivappu', translation: 'Pink', emoji: '🩷', color: 'bg-pink-400' },
   { id: 'clr10', tamil: 'பழுப்பு', english: 'Pazhuppu', translation: 'Brown', emoji: '🟤', color: 'bg-amber-800' },
   { id: 'clr11', tamil: 'சாம்பல்', english: 'Saambal', translation: 'Grey / Ash', emoji: '🩶', color: 'bg-slate-400' },
-  { id: 'clr12', tamil: 'தங்கம்', english: 'Thangam', translation: 'Gold', emoji: '🪙', color: 'bg-yellow-500' },
+  { id: 'clr12', tamil: 'தங்கம்', english: 'Thangam', translation: 'Gold', emoji: '🥇', color: 'bg-yellow-500' },
 ];
 
 export const animals: CategoryItem[] = [
@@ -181,7 +181,7 @@ export const bodyParts: CategoryItem[] = [
   { id: 'bp4', tamil: 'வாய்', english: 'Vaay', translation: 'Mouth', emoji: '👄' },
   { id: 'bp5', tamil: 'கை', english: 'Kai', translation: 'Hand', emoji: '🤚' },
   { id: 'bp6', tamil: 'கால்', english: 'Kaal', translation: 'Leg / Foot', emoji: '🦶' },
-  { id: 'bp7', tamil: 'தலை', english: 'Thalai', translation: 'Head', emoji: '🗣️' },
+  { id: 'bp7', tamil: 'தலை', english: 'Thalai', translation: 'Head', emoji: '👤' },
   { id: 'bp8', tamil: 'பல்', english: 'Pal', translation: 'Tooth', emoji: '🦷' },
   { id: 'bp9', tamil: 'முடி', english: 'Mudi', translation: 'Hair', emoji: '💇' },
   { id: 'bp10', tamil: 'நாக்கு', english: 'Naakku', translation: 'Tongue', emoji: '👅' },
@@ -207,7 +207,7 @@ export const verbs: CategoryItem[] = [
   { id: 'vb5', tamil: 'எழுது', english: 'Ezhuthu', translation: 'Write', emoji: '✍️' },
   { id: 'vb6', tamil: 'பேசு', english: 'Paesu', translation: 'Speak', emoji: '🗣️' },
   { id: 'vb7', tamil: 'ஓடு', english: 'Oodu', translation: 'Run', emoji: '🏃' },
-  { id: 'vb8', tamil: 'நடா', english: 'Nada', translation: 'Walk', emoji: '🚶' },
+  { id: 'vb8', tamil: 'நட', english: 'Nada', translation: 'Walk', emoji: '🚶' },
   { id: 'vb9', tamil: 'விளையாடு', english: 'Vilaiyaadu', translation: 'Play', emoji: '⚽' },
   { id: 'vb10', tamil: 'பார்', english: 'Paar', translation: 'Look / See', emoji: '👀' },
   { id: 'vb11', tamil: 'கேள்', english: 'Kael', translation: 'Listen / Ask', emoji: '👂' },
@@ -235,13 +235,53 @@ export const shapesDirections: CategoryItem[] = [
   { id: 'sd1', tamil: 'வட்டம்', english: 'Vattam', translation: 'Circle', emoji: '⚪' },
   { id: 'sd2', tamil: 'சதுரம்', english: 'Sathuram', translation: 'Square', emoji: '⬛' },
   { id: 'sd3', tamil: 'முக்கோணம்', english: 'Mukkoanam', translation: 'Triangle', emoji: '🔺' },
-  { id: 'sd4', tamil: 'செவ்வகம்', english: 'Sevvagam', translation: 'Rectangle', emoji: '▭' },
+  { id: 'sd4', tamil: 'செவ்வகம்', english: 'Sevvagam', translation: 'Rectangle', emoji: '🖼️' },
   { id: 'sd5', tamil: 'கிழக்கு', english: 'Kizhakku', translation: 'East', emoji: '🌅' },
   { id: 'sd6', tamil: 'மேற்கு', english: 'Maerku', translation: 'West', emoji: '🌇' },
-  { id: 'sd7', tamil: 'வcontract', english: 'Vadakku', translation: 'North', emoji: '🧭' },
+  { id: 'sd7', tamil: 'வடக்கு', english: 'Vadakku', translation: 'North', emoji: '🧭' },
   { id: 'sd8', tamil: 'தெற்கு', english: 'Therku', translation: 'South', emoji: '🗺️' },
   { id: 'sd9', tamil: 'வலது', english: 'Valathu', translation: 'Right Side', emoji: '➡️' },
   { id: 'sd10', tamil: 'இடது', english: 'Idathu', translation: 'Left Side', emoji: '⬅️' },
+];
+
+export const foodTastes: CategoryItem[] = [
+  { id: 'fd1', tamil: 'சாதம்', english: 'Saatham', translation: 'Cooked Rice', emoji: '🍚' },
+  { id: 'fd2', tamil: 'தோசை', english: 'Dosai', translation: 'Dosa (Crispy Crepe)', emoji: '🫓' },
+  { id: 'fd3', tamil: 'இட்லி', english: 'Idli', translation: 'Idli (Steamed Cake)', emoji: '🥟' },
+  { id: 'fd4', tamil: 'பால்', english: 'Paal', translation: 'Milk', emoji: '🥛' },
+  { id: 'fd5', tamil: 'தேநீர்', english: 'Thaeneer', translation: 'Tea', emoji: '☕' },
+  { id: 'fd6', tamil: 'காபி', english: 'Kaapi', translation: 'Coffee', emoji: '☕' },
+  { id: 'fd7', tamil: 'இனிப்பு', english: 'Inippu', translation: 'Sweet Taste', emoji: '🍬' },
+  { id: 'fd8', tamil: 'காரம்', english: 'Kaaram', translation: 'Spicy / Hot Taste', emoji: '🌶️' },
+  { id: 'fd9', tamil: 'புளிப்பு', english: 'Pulippu', translation: 'Sour Taste', emoji: '🍋' },
+  { id: 'fd10', tamil: 'உப்பு', english: 'Uppu', translation: 'Salt', emoji: '🧂' },
+  { id: 'fd11', tamil: 'நெய்', english: 'Ney', translation: 'Ghee (Clarified Butter)', emoji: '🧈' },
+  { id: 'fd12', tamil: 'தயிர்', english: 'Thayir', translation: 'Curd / Yogurt', emoji: '🥣' },
+];
+
+export const timeTerms: CategoryItem[] = [
+  { id: 'tm1', tamil: 'இன்று', english: 'Indru', translation: 'Today', emoji: '📅' },
+  { id: 'tm2', tamil: 'நாளை', english: 'Naalai', translation: 'Tomorrow', emoji: '🌅' },
+  { id: 'tm3', tamil: 'நேற்று', english: 'Naetru', translation: 'Yesterday', emoji: '⏪' },
+  { id: 'tm4', tamil: 'காலை', english: 'Kaalai', translation: 'Morning', emoji: '🌄' },
+  { id: 'tm5', tamil: 'மதியம்', english: 'Mathiyam', translation: 'Afternoon', emoji: '☀️' },
+  { id: 'tm6', tamil: 'மாலை', english: 'Maalai', translation: 'Evening', emoji: '🌆' },
+  { id: 'tm7', tamil: 'இரவு', english: 'Iravu', translation: 'Night', emoji: '🌙' },
+  { id: 'tm8', tamil: 'மணி', english: 'Mani', translation: 'Hour / Time', emoji: '⏰' },
+  { id: 'tm9', tamil: 'வாரம்', english: 'Vaaram', translation: 'Week', emoji: '🗓️' },
+  { id: 'tm10', tamil: 'மாதம்', english: 'Maatham', translation: 'Month', emoji: '📆' },
+  { id: 'tm11', tamil: 'ஆண்டு', english: 'Aandu', translation: 'Year', emoji: '🎆' },
+];
+
+export const emotions: CategoryItem[] = [
+  { id: 'em1', tamil: 'மகிழ்ச்சி', english: 'Magizhchi', translation: 'Happiness / Joy', emoji: '😄' },
+  { id: 'em2', tamil: 'கோபம்', english: 'Kobam', translation: 'Anger', emoji: '😡' },
+  { id: 'em3', tamil: 'பயம்', english: 'Bayam', translation: 'Fear', emoji: '😨' },
+  { id: 'em4', tamil: 'கவலை', english: 'Kavalai', translation: 'Sadness / Worry', emoji: '😢' },
+  { id: 'em5', tamil: 'அன்பு', english: 'Anbu', translation: 'Love / Affection', emoji: '❤️' },
+  { id: 'em6', tamil: 'அமைதி', english: 'Amaidhi', translation: 'Peace / Calm', emoji: '🕊️' },
+  { id: 'em7', tamil: 'சிரிப்பு', english: 'Sirippu', translation: 'Laughter', emoji: '😆' },
+  { id: 'em8', tamil: 'அழுகை', english: 'Azhugai', translation: 'Crying / Tears', emoji: '😭' },
 ];
 
 export const phrases: Phrase[] = [

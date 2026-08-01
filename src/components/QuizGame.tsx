@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Volume2, Trophy, Sparkles, RefreshCw, CheckCircle2, XCircle, Star } from 'lucide-react';
 import { 
   vowels, consonants, numbers, commonWords, fruitsVeggies, colors, animals, family, vehicles, bodyParts, 
-  daysOfWeek, verbs, nature, shapesDirections, phrases 
+  daysOfWeek, verbs, nature, shapesDirections, foodTastes, timeTerms, emotions, phrases 
 } from '../data/tamil';
 import { playAudio } from '../utils/audio';
 import { motion, AnimatePresence } from 'motion/react';
@@ -34,7 +34,8 @@ export function QuizGame() {
     const categoryItems = [
       ...numbers, ...commonWords, ...fruitsVeggies, ...colors, 
       ...animals, ...family, ...vehicles, ...bodyParts,
-      ...daysOfWeek, ...verbs, ...nature, ...shapesDirections
+      ...daysOfWeek, ...verbs, ...nature, ...shapesDirections,
+      ...foodTastes, ...timeTerms, ...emotions
     ].map(c => ({
       tamil: c.tamil,
       translation: c.translation,
